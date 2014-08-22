@@ -52,6 +52,23 @@ DataBase::readFile(const char* iPath) {
 	}
 }
 
+void
+DataBase::outputResult(std::map<std::string, double> iResults, const char* iPath) {
+	std::fstream lFileStream;
+	lFileStream.open(iPath);
+	if (!lFileStream.is_open()) {
+		lFileStream.open(iPath, std::ios_base::in | std::ios_base::out | std::ios_base::trunc);
+	}
+	std::ofstream lOutFilestream(iPath);
+	for (std::pair<std::string, double> lPair : iResults) {
+		tyr::vector_string_type lVector = tool::splitLine(lPair.first);
+		if (lVector.size() == 2 && lPair.second == 1) {
+			lOutFilestream << " " << lVector[1];
+		}
+	}
+	lOutFilestream.close();
+}
+
 std::pair<int, int>
 DataBase::getCoordinates(std::string iName) {
 	for (Site lSite : mSites) {

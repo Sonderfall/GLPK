@@ -92,21 +92,15 @@ LinearProblem::processConstraints() {
 	  int lLineIterator = 1;
 	  for (Constraint lConstraint : mConstraints) {
 		  std::vector<std::pair<double, Variable>> lVariables = lConstraint.getVariables();
-
-//		  std::cout << "New Constraint : " << lConstraint.getName() << " -- lower : " << lConstraint.getLowerLimit() << " -- upper : " << lConstraint.getUpperLimit() <<std::endl;
-
 		  for (std::pair<double, Variable> lPair : lVariables) {
 			  ++mMatrixIterator;
 			  Variable lVariable(lPair.second);
-
-
 			  assert(lVariable.getLowerLimit() <= lVariable.getUpperLimit());
 			  bool lFind = false;
 			  for (int lColIterator = 1; lColIterator <= glp_get_num_cols(mLinearProb); ++lColIterator) {
 				  const char* lColName = glp_get_col_name(mLinearProb, lColIterator);
 				  if (strcmp(lVariable.getName().c_str(), lColName) == 0) {
 					  mMatrixLines[mMatrixIterator] = lLineIterator;
-//			  std::cout << "		Update Variable in Constraint : " << lVariable.getName() << " with " << lPair.first << " -- Line : " << lLineIterator << " -- Col : "<<  lColIterator<<std::endl;
 					  mMatrixColumns[mMatrixIterator] = lColIterator;
 					  mMatrixValues[mMatrixIterator] = lPair.first;
 
@@ -119,9 +113,6 @@ LinearProblem::processConstraints() {
 				  int lVariablePosition = glp_get_num_cols(mLinearProb);
 				  glp_set_col_name(mLinearProb, lVariablePosition, lVariable.getName().c_str());
 				  glp_set_col_bnds(mLinearProb, lVariablePosition, GLP_DB, lVariable.getLowerLimit(), lVariable.getUpperLimit());
-
-//				  std::cout << "		Add New Variable in Constraint : " << lVariable.getName() << " -- Line : " << lLineIterator << " -- Col : "<< lVariablePosition <<std::endl;
-
 				  if (mProblemKind == plne) {
 					  glp_set_col_kind(mLinearProb, lVariablePosition, GLP_IV);
 				  }
@@ -147,8 +138,6 @@ LinearProblem::processConstraints() {
 			  int lConstantPosition = glp_get_num_cols(mLinearProb);
 			  glp_set_col_name(mLinearProb, lConstantPosition, lConstantName.c_str());
 			  glp_set_col_bnds(mLinearProb, lConstantPosition, GLP_FX, lConstant, lConstant);
-//			  std::cout << "		Add New Constant in Constraint : " << lConstantName << " -- Line : " << lLineIterator << " -- Col : "<< lConstantPosition<<std::endl;
-
 			  mMatrixLines[mMatrixIterator] = lLineIterator;
 			  mMatrixColumns[mMatrixIterator] = lConstantPosition;
 			  mMatrixValues[mMatrixIterator] = 1;
@@ -182,16 +171,6 @@ LinearProblem::processSimplex() {
 			assert(mProblemKind == plne || mProblemKind == pl);
 			break;
 	}
-}
-
-void
-LinearProblem::printMatrix() {
-//	for (unsigned int i = 1; i <= glp_get_num_rows(mLinearProb); ++i) {
-//		for (unsigned int j = 1; j <= glp_get_num_cols(mLinearProb); ++j) {
-//			std::cout << mMatrixValues[i] << " ";
-//		}
-//		std::cout << std::endl;
-//	}
 }
 
 void

@@ -54,18 +54,17 @@ main(int argc, char** argv) {
 					lConstraintDistanceName.append(" and ");
 					lConstraintDistanceName.append(lSecondVariable.getName());
 
-					Constraint lConstraintDistance(lConstraintDistanceName.c_str());
-					lConstraintDistance.setLimits(MINF, 50);
 					std::pair<int, int> lFirstPair = lDataBase->getCoordinates(lFirstVariable.getName());
 					std::pair<int, int> lSecondPair = lDataBase->getCoordinates(lSecondVariable.getName());
 
+					Constraint lConstraintDistance(lConstraintDistanceName.c_str());
 					lConstraintDistance.addConstantInConstraint(50);
 					lConstraintDistance.addConstantInConstraint(PBIGM);
 					lConstraintDistance.addVariableInConstraint(MBIGM, lVariableBinary);
 					lConstraintDistance.setLimits(tool::euclidianDistance(lFirstPair.first, lFirstPair.second,
 							 	 	 	 	 	 	 	 	 	 	 	  lSecondPair.first, lSecondPair.second), PINF);
 
-					std::string lConstraintChooseName("ConstraintImpl ");
+					std::string lConstraintChooseName("ConstraintChoose ");
 					lConstraintChooseName.append(lSecondVariable.getName());
 					lConstraintChooseName.append(" with ");
 					lConstraintChooseName.append(lFirstVariable.getName());
@@ -85,5 +84,7 @@ main(int argc, char** argv) {
 
 	lLinearProblem.solve();
 	lLinearProblem.printResults();
+	lDataBase->outputResult(lLinearProblem.getResults(), "results.txt");
+
 	return 0;
 }

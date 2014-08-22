@@ -37,6 +37,7 @@ public:
 
 public:
 	void readFile(const char* iPath);
+	void outputResult(std::map<std::string, double> iResults, const char* iPath);
 	std::pair<int, int> getCoordinates(std::string iName);
 	std::vector<Site> getSites();
 	int getNbWareHouseToBuild();
