@@ -9,13 +9,13 @@
 
 Constraint::Constraint()
 	: mName ("UnNamed Constraint")
-	, mLowerLimit (mInf)
-	, mUpperLimit (pInf) {}
+	, mLowerLimit (MINF)
+	, mUpperLimit (PINF) {}
 
 Constraint::Constraint(std::string iName)
 	: mName (iName)
-	, mLowerLimit (mInf)
-	, mUpperLimit (pInf) {}
+	, mLowerLimit (MINF)
+	, mUpperLimit (PINF) {}
 
 Constraint::Constraint(const Constraint& iConstraint)
 	: mName (iConstraint.mName)

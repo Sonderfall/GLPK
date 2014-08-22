@@ -8,6 +8,11 @@
 #ifndef ALL_H_
 # define ALL_H_
 
+# define PINF 2147483647
+# define MINF -2147483647
+# define PBIGM 60000
+# define MBIGM -60000
+
 # include <cstdio>
 # include <cstdint>
 # include <cstdlib>
@@ -30,13 +35,6 @@
 # include <stdint.h>
 # include <glpk.h>
 # include <assert.h>
-
-enum GreatValue {
-	pInf,
-	mInf,
-	pBigM,
-	mBigM
-};
 
 namespace tyr {
 	typedef typename std::istream_iterator<std::string> stream_string_type;

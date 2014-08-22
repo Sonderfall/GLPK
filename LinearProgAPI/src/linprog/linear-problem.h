@@ -32,6 +32,7 @@ public:
 public:
 	void solve();
 	void printResults();
+	void printMatrix();
 
 public:
 	void addConstraint(Constraint iConstraint);

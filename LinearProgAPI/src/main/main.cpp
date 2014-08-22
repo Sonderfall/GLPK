@@ -124,50 +124,112 @@ main(int argc, char** argv) {
 					lConstraintDistanceName.append(lSecondVariable.getName());
 
 					Constraint lConstraintDistance(lConstraintDistanceName.c_str());
-					lConstraintDistance.setLimits(mInf, 50);
+					lConstraintDistance.setLimits(MINF, 50);
 					std::pair<int, int> lFirstPair = lDataBase->getCoordinates(lFirstVariable.getName());
 					std::pair<int, int> lSecondPair = lDataBase->getCoordinates(lSecondVariable.getName());
-					lConstraintDistance.addConstantInConstraint(tool::euclidianDistance(lFirstPair.first,
-																						lFirstPair.second,
-																						lSecondPair.first,
-																						lSecondPair.second));
-					lConstraintDistance.addConstantInConstraint(mBigM);
-					lConstraintDistance.addVariableInConstraint(pBigM, lVariableBinary);
-					lConstraintDistance.setLimits(mInf, 50);
+
+//					lConstraintDistance.addConstantInConstraint(tool::euclidianDistance(lFirstPair.first,
+//																						lFirstPair.second,
+//																						lSecondPair.first,
+//																						lSecondPair.second));
+//					lConstraintDistance.addConstantInConstraint(mBigM);
+//					lConstraintDistance.addVariableInConstraint(pBigM, lVariableBinary);
+//					lConstraintDistance.setLimits(mInf, 50);
+
+					lConstraintDistance.addConstantInConstraint(50);
+					lConstraintDistance.addConstantInConstraint(PBIGM);
+					lConstraintDistance.addVariableInConstraint(MBIGM, lVariableBinary);
+					lConstraintDistance.setLimits(tool::euclidianDistance(lFirstPair.first, lFirstPair.second,
+							 	 	 	 	 	 	 	 	 	 	 	  lSecondPair.first, lSecondPair.second), PINF);
 
 					std::string lConstraintFirstVariableName("ConstraintImpl ");
 					lConstraintFirstVariableName.append(lFirstVariable.getName());
 					lConstraintFirstVariableName.append(" with ");
 					lConstraintFirstVariableName.append(lSecondVariable.getName());
 
+//					Constraint lConstraintFirstVariable(lConstraintFirstVariableName.c_str());
+//					lConstraintFirstVariable.addVariableInConstraint(1, lFirstVariable);
+//					lConstraintFirstVariable.addVariableInConstraint(MBIGM, lVariableBinary);
+//					lConstraintFirstVariable.addConstantInConstraint(PBIGM);
+//					lConstraintFirstVariable.setLimits(0, PINF);
+
 					Constraint lConstraintFirstVariable(lConstraintFirstVariableName.c_str());
 					lConstraintFirstVariable.addVariableInConstraint(1, lFirstVariable);
-					lConstraintFirstVariable.addVariableInConstraint(mBigM, lVariableBinary);
-					lConstraintFirstVariable.addConstantInConstraint(pBigM);
-					lConstraintFirstVariable.setLimits(0, pInf);
+					lConstraintFirstVariable.addVariableInConstraint(-1, lVariableBinary);
+//					lConstraintFirstVariable.addConstantInConstraint(1);
+					lConstraintFirstVariable.setLimits(0, 1);
 
 					std::string lConstraintSecondVariableName("ConstraintImpl ");
 					lConstraintSecondVariableName.append(lSecondVariable.getName());
 					lConstraintSecondVariableName.append(" with ");
 					lConstraintSecondVariableName.append(lFirstVariable.getName());
 
+//					Constraint lConstraintSecondVariable(lConstraintSecondVariableName.c_str());
+//					lConstraintSecondVariable.addVariableInConstraint(1, lSecondVariable);
+//					lConstraintSecondVariable.addVariableInConstraint(MBIGM, lVariableBinary);
+//					lConstraintSecondVariable.addConstantInConstraint(PBIGM);
+//					lConstraintSecondVariable.setLimits(0, PINF);
+
 					Constraint lConstraintSecondVariable(lConstraintSecondVariableName.c_str());
 					lConstraintSecondVariable.addVariableInConstraint(1, lSecondVariable);
-					lConstraintSecondVariable.addVariableInConstraint(mBigM, lVariableBinary);
-					lConstraintSecondVariable.addConstantInConstraint(pBigM);
-					lConstraintSecondVariable.setLimits(0, pInf);
+					lConstraintSecondVariable.addVariableInConstraint(-1, lVariableBinary);
+//					lConstraintSecondVariable.addConstantInConstraint(1);
+					lConstraintSecondVariable.setLimits(0, 1);
 
-//					std::cout << lConstraintDistanceName << std::endl;
-//					std::cout << lVariableBinaryName << std::endl;
-//					std::cout << lConstraintFirstVariableName << std::endl;
-//					std::cout << lConstraintSecondVariableName << std::endl;
-//					std::cout << "Distance : " << tool::euclidianDistance(lFirstPair.first, lFirstPair.second,
-//							lSecondPair.first,
-//							lSecondPair.second) << std::endl << std::endl;
+					std::cout << lConstraintDistanceName << std::endl;
+					std::cout << lVariableBinaryName << std::endl;
+					std::cout << lConstraintFirstVariableName << std::endl;
+					std::cout << lConstraintSecondVariableName << std::endl;
+					std::cout << "Distance : " << tool::euclidianDistance(lFirstPair.first, lFirstPair.second,
+							lSecondPair.first,
+							lSecondPair.second) << std::endl << std::endl;
 
-					lLinearProblem.addConstraint(lConstraintDistance);
-					lLinearProblem.addConstraint(lConstraintFirstVariable);
-					lLinearProblem.addConstraint(lConstraintSecondVariable);
+
+					std::string lConstraintChooseName("ConstraintImpl ");
+					lConstraintChooseName.append(lSecondVariable.getName());
+					lConstraintChooseName.append(" with ");
+					lConstraintChooseName.append(lFirstVariable.getName());
+
+					Constraint lConstraintChoose(lConstraintChooseName.c_str());
+					lConstraintChoose.addVariableInConstraint(1, lFirstVariable);
+					lConstraintChoose.addVariableInConstraint(-1, lSecondVariable);
+					lConstraintChoose.addVariableInConstraint(1, lVariableBinary);
+					lConstraintChoose.setLimits(0, 1);
+
+//					lLinearProblem.addConstraint(lConstraintDistance);
+//					lLinearProblem.addConstraint(lConstraintChoose);
+//					lLinearProblem.addConstraint(lConstraintFirstVariable);
+//					lLinearProblem.addConstraint(lConstraintSecondVariable);
+
+					if (tool::euclidianDistance(lFirstPair.first, lFirstPair.second,
+							lSecondPair.first,
+							lSecondPair.second) > 50) {
+
+						std::string lConstraintChoose1Name("ConstraintImpl ");
+						lConstraintChoose1Name.append(lSecondVariable.getName());
+						lConstraintChoose1Name.append(" with ");
+						lConstraintChoose1Name.append(lFirstVariable.getName());
+
+						Constraint lConstraintChoose1(lConstraintChoose1Name.c_str());
+						lConstraintChoose1.addVariableInConstraint(1, lFirstVariable);
+						lConstraintChoose1.addVariableInConstraint(1, lSecondVariable);
+//						lConstraintChoose1.addVariableInConstraint(1, lVariableBinary);
+						lConstraintChoose1.setLimits(0, 1);
+
+//						std::string lConstraintChoose2Name("ConstraintImpl ");
+//						lConstraintChoose2Name.append(lSecondVariable.getName());
+//						lConstraintChoose2Name.append(" with ");
+//						lConstraintChoose2Name.append(lFirstVariable.getName());
+//
+//						Constraint lConstraintChoose2(lConstraintChoose1Name.c_str());
+//						lConstraintChoose2.addVariableInConstraint(-1, lFirstVariable);
+//						lConstraintChoose2.addVariableInConstraint(1, lSecondVariable);
+//						lConstraintChoose2.addVariableInConstraint(-1, lVariableBinary);
+//						lConstraintChoose2.setLimits(-1, PINF);
+
+						lLinearProblem.addConstraint(lConstraintChoose1);
+//						lLinearProblem.addConstraint(lConstraintChoose2);
+					}
 				}
 			}
 		}
