@@ -12,7 +12,7 @@ LinearProblem::LinearProblem(std::string iName, ProblemObjective iObj)
 , mProblemKind (pl)
 , mProblemObjective (iObj)
 , mMatrixIterator (0) {
-	init();
+	initLinearProblem();
 }
 
 LinearProblem::LinearProblem(std::string iName, ProblemObjective iObj, ProblemKind iKind)
@@ -20,7 +20,7 @@ LinearProblem::LinearProblem(std::string iName, ProblemObjective iObj, ProblemKi
 , mProblemKind (iKind)
 , mProblemObjective (iObj)
 , mMatrixIterator (0) {
-	init();
+	initLinearProblem();
 }
 
 LinearProblem::~LinearProblem() {
@@ -28,7 +28,7 @@ LinearProblem::~LinearProblem() {
 }
 
 void
-LinearProblem::init() {
+LinearProblem::initLinearProblem() {
 	mLinearProb = glp_create_prob();
 	glp_set_prob_name(mLinearProb, mName.c_str());
 	std::transform(mName.begin(), mName.end(), mName.begin(), toupper);
@@ -78,72 +78,81 @@ LinearProblem::processObjectiveFunction() {
 
 void
 LinearProblem::processConstraints() {
-	  glp_add_rows(mLinearProb, mConstraints.size());
-	  unsigned int lConstraintPosition = 1;
-	  for (Constraint lConstraint : mConstraints) {
-		  glp_set_row_name(mLinearProb, lConstraintPosition, lConstraint.getName().c_str());
-		  if (lConstraint.getLowerLimit() == lConstraint.getUpperLimit()) {
-			  glp_set_row_bnds(mLinearProb, lConstraintPosition, GLP_FX, lConstraint.getLowerLimit(), lConstraint.getUpperLimit());
-		  } else {
-			  glp_set_row_bnds(mLinearProb, lConstraintPosition, GLP_DB, lConstraint.getLowerLimit(), lConstraint.getUpperLimit());
-		  }
-		  ++lConstraintPosition;
-	  }
-	  int lLineIterator = 1;
-	  for (Constraint lConstraint : mConstraints) {
-		  std::vector<std::pair<double, Variable>> lVariables = lConstraint.getVariables();
-		  for (std::pair<double, Variable> lPair : lVariables) {
-			  ++mMatrixIterator;
-			  Variable lVariable(lPair.second);
-			  assert(lVariable.getLowerLimit() <= lVariable.getUpperLimit());
-			  bool lFind = false;
-			  for (int lColIterator = 1; lColIterator <= glp_get_num_cols(mLinearProb); ++lColIterator) {
-				  const char* lColName = glp_get_col_name(mLinearProb, lColIterator);
-				  if (strcmp(lVariable.getName().c_str(), lColName) == 0) {
-					  mMatrixLines[mMatrixIterator] = lLineIterator;
-					  mMatrixColumns[mMatrixIterator] = lColIterator;
-					  mMatrixValues[mMatrixIterator] = lPair.first;
+	initConstraint();
+	initVarAndConsInConstraint();
+}
 
-					  lFind = true;
-					  break;
-				  }
-			  }
-			  if (!lFind) {
-				  glp_add_cols(mLinearProb, 1);
-				  int lVariablePosition = glp_get_num_cols(mLinearProb);
-				  glp_set_col_name(mLinearProb, lVariablePosition, lVariable.getName().c_str());
-				  glp_set_col_bnds(mLinearProb, lVariablePosition, GLP_DB, lVariable.getLowerLimit(), lVariable.getUpperLimit());
-				  if (mProblemKind == plne) {
-					  glp_set_col_kind(mLinearProb, lVariablePosition, GLP_IV);
-				  }
+void
+LinearProblem::initConstraint() {
+	glp_add_rows(mLinearProb, mConstraints.size());
+	unsigned int lConstraintPosition = 1;
+	for (Constraint lConstraint : mConstraints) {
+		glp_set_row_name(mLinearProb, lConstraintPosition, lConstraint.getName().c_str());
+		if (lConstraint.getLowerLimit() == lConstraint.getUpperLimit()) {
+			glp_set_row_bnds(mLinearProb, lConstraintPosition, GLP_FX, lConstraint.getLowerLimit(), lConstraint.getUpperLimit());
+		} else {
+			glp_set_row_bnds(mLinearProb, lConstraintPosition, GLP_DB, lConstraint.getLowerLimit(), lConstraint.getUpperLimit());
+		}
+		++lConstraintPosition;
+	}
+}
 
-				  if (lVariable.isBinary()) {
-					  glp_set_col_kind(mLinearProb, lVariablePosition, GLP_BV);
-				  }
-				  mMatrixLines[mMatrixIterator] = lLineIterator;
-				  mMatrixColumns[mMatrixIterator] = lVariablePosition;
-				  mMatrixValues[mMatrixIterator] = lPair.first;
-			  }
-		  }
-		  std::vector<double> lConstants = lConstraint.getConstants();
-		  for (double lConstant : lConstants) {
-			  ++mMatrixIterator;
-			  std::string lConstantName = "Constant " + tool::integerToString(lConstant);
-			  if (lConstant == PBIGM) {
-				  lConstantName = "Constant pBigM";
-			  } else if (lConstant == MBIGM) {
-				  lConstantName = "Constant mBigM";
-			  }
-			  glp_add_cols(mLinearProb, 1);
-			  int lConstantPosition = glp_get_num_cols(mLinearProb);
-			  glp_set_col_name(mLinearProb, lConstantPosition, lConstantName.c_str());
-			  glp_set_col_bnds(mLinearProb, lConstantPosition, GLP_FX, lConstant, lConstant);
-			  mMatrixLines[mMatrixIterator] = lLineIterator;
-			  mMatrixColumns[mMatrixIterator] = lConstantPosition;
-			  mMatrixValues[mMatrixIterator] = 1;
-		  }
-		  ++lLineIterator;
-	  }
+void
+LinearProblem::initVarAndConsInConstraint() {
+	int lLineIterator = 1;
+	for (Constraint lConstraint : mConstraints) {
+		std::vector<std::pair<double, Variable>> lVariables = lConstraint.getVariables();
+		for (std::pair<double, Variable> lPair : lVariables) {
+			++mMatrixIterator;
+			Variable lVariable(lPair.second);
+			assert(lVariable.getLowerLimit() <= lVariable.getUpperLimit());
+			bool lFind = false;
+			for (int lColIterator = 1; lColIterator <= glp_get_num_cols(mLinearProb); ++lColIterator) {
+				const char* lColName = glp_get_col_name(mLinearProb, lColIterator);
+				if (strcmp(lVariable.getName().c_str(), lColName) == 0) {
+					mMatrixLines[mMatrixIterator] = lLineIterator;
+					mMatrixColumns[mMatrixIterator] = lColIterator;
+					mMatrixValues[mMatrixIterator] = lPair.first;
+					lFind = true;
+					break;
+				}
+			}
+			if (!lFind) {
+				glp_add_cols(mLinearProb, 1);
+				int lVariablePosition = glp_get_num_cols(mLinearProb);
+				glp_set_col_name(mLinearProb, lVariablePosition, lVariable.getName().c_str());
+				glp_set_col_bnds(mLinearProb, lVariablePosition, GLP_DB, lVariable.getLowerLimit(), lVariable.getUpperLimit());
+				if (mProblemKind == plne) {
+					glp_set_col_kind(mLinearProb, lVariablePosition, GLP_IV);
+				}
+
+				if (lVariable.isBinary()) {
+					glp_set_col_kind(mLinearProb, lVariablePosition, GLP_BV);
+				}
+				mMatrixLines[mMatrixIterator] = lLineIterator;
+				mMatrixColumns[mMatrixIterator] = lVariablePosition;
+				mMatrixValues[mMatrixIterator] = lPair.first;
+			}
+		}
+		std::vector<double> lConstants = lConstraint.getConstants();
+		for (double lConstant : lConstants) {
+			++mMatrixIterator;
+			std::string lConstantName = "Constant " + tool::integerToString(lConstant);
+			if (lConstant == PBIGM) {
+				lConstantName = "Constant pBigM";
+			} else if (lConstant == MBIGM) {
+				lConstantName = "Constant mBigM";
+			}
+			glp_add_cols(mLinearProb, 1);
+			int lConstantPosition = glp_get_num_cols(mLinearProb);
+			glp_set_col_name(mLinearProb, lConstantPosition, lConstantName.c_str());
+			glp_set_col_bnds(mLinearProb, lConstantPosition, GLP_FX, lConstant, lConstant);
+			mMatrixLines[mMatrixIterator] = lLineIterator;
+			mMatrixColumns[mMatrixIterator] = lConstantPosition;
+			mMatrixValues[mMatrixIterator] = 1;
+		}
+		++lLineIterator;
+	}
 }
 
 void

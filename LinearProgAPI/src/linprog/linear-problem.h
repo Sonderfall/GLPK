@@ -42,9 +42,11 @@ public:
 	std::map<std::string, double> getResults();
 
 private:
-	void init();
+	void initLinearProblem();
 	void processObjectiveFunction();
 	void processConstraints();
+	void initConstraint();
+	void initVarAndConsInConstraint();
 	void processSimplex();
 
 private:
