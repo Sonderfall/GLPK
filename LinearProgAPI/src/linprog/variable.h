@@ -12,10 +12,8 @@
 
 class Variable {
 public:
-	Variable();
 	Variable(std::string iName);
 	Variable(std::string iName, bool iIsBinary);
-	Variable(bool iIsBinary);
 	Variable(const Variable& iVariable);
 	virtual ~Variable();
 

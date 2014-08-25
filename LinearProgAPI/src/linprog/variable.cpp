@@ -7,26 +7,15 @@
 
 # include "variable.h"
 
-Variable::Variable()
-	: mName ("UnNamed Variable")
-	, mIsBinary (false)
-	, mLowerLimit (0)
-	, mUpperLimit (PINF) {}
-
 Variable::Variable(std::string iName)
 	: mName (iName)
 	, mIsBinary (false)
 	, mLowerLimit (0)
-	, mUpperLimit (PINF) {}
+	, mUpperLimit (PINF) {
+}
 
 Variable::Variable(std::string iName, bool iIsBinary)
 	: mName (iName)
-	, mIsBinary (iIsBinary)
-	, mLowerLimit (0)
-	, mUpperLimit (iIsBinary ? 1 : PINF) {}
-
-Variable::Variable(bool iIsBinary)
-	: mName ("UnNamed Variable")
 	, mIsBinary (iIsBinary)
 	, mLowerLimit (0)
 	, mUpperLimit (iIsBinary ? 1 : PINF) {}
