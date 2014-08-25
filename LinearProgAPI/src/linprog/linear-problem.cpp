@@ -78,12 +78,12 @@ LinearProblem::processObjectiveFunction() {
 
 void
 LinearProblem::processConstraints() {
-	initConstraint();
-	initVarAndConsInConstraint();
+	processConstraintsAdd();
+	processConstraintsVarAndConstant();
 }
 
 void
-LinearProblem::initConstraint() {
+LinearProblem::processConstraintsAdd() {
 	glp_add_rows(mLinearProb, mConstraints.size());
 	unsigned int lConstraintPosition = 1;
 	for (Constraint lConstraint : mConstraints) {
@@ -98,7 +98,7 @@ LinearProblem::initConstraint() {
 }
 
 void
-LinearProblem::initVarAndConsInConstraint() {
+LinearProblem::processConstraintsVarAndConstant() {
 	int lLineIterator = 1;
 	for (Constraint lConstraint : mConstraints) {
 		std::vector<std::pair<double, Variable>> lVariables = lConstraint.getVariables();
