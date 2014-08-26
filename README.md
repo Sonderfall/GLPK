@@ -12,6 +12,7 @@ It allows to establish basic and advanced linear problem through an object orien
 ### Features ###
 
 There are three main new class in this C++ API :
+
 * LinearProblem : The problem it self, easy to set parameters (maximization/minimization and if it's an integer problem).
 * Variable : Can be a decision varable and / or modelisation variable.
 * Constraint : Contains variable and potential constant.
@@ -22,9 +23,11 @@ There are three main new class in this C++ API :
 
 Maximize : z = 10x1 + 6x2 + 4x3
 subject to :
+
 * x1 + x2 + x3 ≤ 100
 * 10x1 + 4x2 + 5x3 ≤ 600
 * 2x1 + 2x2 + 6x3 ≤ 300
+
 where all variables are non-negative : x1 ≥ 0, x2 ≥ 0, x3 ≥ 0
 
 #### Implementation ####
