@@ -15,7 +15,7 @@ There are three main new class in this C++ API :
 
 * LinearProblem : The problem it self, easy to set parameters (maximization/minimization and if it's an integer problem).
 * Variable : Can be a decision varable and / or modelisation variable.
-* Constraint : Contains variable and potential constant.
+* Constraint : Contains variables and potential constants.
 
 ### Usecase ###
 
@@ -32,7 +32,7 @@ where all variables are non-negative : x1 ≥ 0, x2 ≥ 0, x3 ≥ 0
 
 #### Implementation ####
 
-	LinearProblem lLinearProblem("GLPK Example", max, plne);
+	LinearProblem lLinearProblem("GLPK Example", max, pl);
 
 	Variable lVariableX1("X1");
 	Variable lVariableX2("X2");
