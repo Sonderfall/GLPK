@@ -56,3 +56,18 @@ inline std::string
 Constraint::getName() {
 	return mName;
 }
+
+inline void
+Constraint::operator()(double iConstant) {
+	mConstants.push_back(iConstant);
+}
+
+inline void
+Constraint::operator()(double iCoefficient, Variable iVariable) {
+	mVariables.push_back(std::make_pair(iCoefficient, iVariable));
+}
+
+inline void
+Constraint::operator()(Variable iVariable) {
+	mVariables.push_back(std::make_pair(1, iVariable));
+}

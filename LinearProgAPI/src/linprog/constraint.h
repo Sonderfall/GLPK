@@ -76,6 +76,34 @@ public:
 	void setLimits(int iLowerLimit, int iUpperLimit);
 
 	/**
+	 * \brief Function Operator
+	 * \brief Add a new constant to the constraint
+	 * By default it's an addition
+	 * If you are expecting a subtraction, specify a negative constant
+	 * \param iConstant the constant to add
+	 */
+	void operator()(double iConstant);
+
+	/**
+	 * \brief Function Operator
+	 * \brief Add a new variable to the constraint
+	 * By default it's an addition
+	 * If you are expecting a subtraction, specify a negative Coefficient
+	 * \param iCoefficient the coefficient of the variable
+	 * \param iVariable the variable to add
+	 */
+	void operator()(double iCoefficient, Variable iVariable);
+
+	/**
+	 * \brief Function Operator
+	 * \brief Add a new variable to the constraint
+	 * By default it's an addition
+	 * If you are expecting a subtraction, specify a negative Coefficient
+	 * \param iVariable the variable to add
+	 */
+	void operator()(Variable iVariable);
+
+	/**
 	 * Getters
 	 */
 	std::string getName();

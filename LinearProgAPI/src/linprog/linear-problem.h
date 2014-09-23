@@ -80,6 +80,29 @@ public:
 	 */
 	void addVariableInObjectiveFunction(double iCoefficient, Variable iVariable);
 
+
+	/**
+	 * \brief Function Operator
+	 * \brief Add a new constraint to the problem
+	 * \param iConstraint the constraint to add
+	 */
+	void operator()(Constraint iConstraint);
+
+	/**
+	 * \brief Function Operator
+	 * \brief Add a new Variable in the objective function
+	 * \param iCoefficient the coefficient of the variable
+	 * \param iVariable the variable to add
+	 */
+	void operator()(double iCoefficient, Variable iVariable);
+
+	/**
+	 * \brief Function Operator
+	 * \brief Add a new Variable in the objective function
+	 * \param iVariable the variable to add
+	 */
+	void operator()(Variable iVariable);
+
 	/**
 	 * Getters
 	 */

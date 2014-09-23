@@ -29,3 +29,18 @@ inline std::map<std::string, double>
 LinearProblem::getResults() {
 	return mResults;
 }
+
+inline void
+LinearProblem::operator()(double iCoefficient, Variable iVariable) {
+	mObjectiveFunctionVariables.push_back(std::make_pair(iCoefficient, iVariable));
+}
+
+inline void
+LinearProblem::operator()(Variable iVariable) {
+	mObjectiveFunctionVariables.push_back(std::make_pair(1, iVariable));
+}
+
+inline void
+LinearProblem::operator()(Constraint iConstraint) {
+	mConstraints.push_back(iConstraint);
+}
