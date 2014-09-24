@@ -32,7 +32,7 @@ where all variables are non-negative : x1 ≥ 0, x2 ≥ 0, x3 ≥ 0
 
 #### Implementation ####
 
-	/* Problem declaration, specify its name, the objective and if it's a integer problem */
+	/* Problem declaration, specify its name, the objective and if it's an integer problem */
 	LinearProblem lLinearProblem("GLPK Example", max, plne);
 
 	/* Variables declaration */
