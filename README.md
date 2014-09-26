@@ -60,8 +60,8 @@ where all variables are non-negative : x1 ≥ 0, x2 ≥ 0, x3 ≥ 0
 
 	/* Add constraints to the linear problem */
 	lLinearProblem(lConstraintP);
-        lLinearProblem(lConstraintQ);
-        lLinearProblem(lConstraintR);
+	lLinearProblem(lConstraintQ);
+	lLinearProblem(lConstraintR);
 
 	/* Solve the problem with the simplex algorithm */
 	lLinearProblem.solve();
