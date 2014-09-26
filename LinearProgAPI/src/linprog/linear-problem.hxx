@@ -30,17 +30,20 @@ LinearProblem::getResults() {
 	return mResults;
 }
 
-inline void
+inline LinearProblem&
 LinearProblem::operator()(double iCoefficient, Variable iVariable) {
 	mObjectiveFunctionVariables.push_back(std::make_pair(iCoefficient, iVariable));
+	return *this;
 }
 
-inline void
+inline LinearProblem&
 LinearProblem::operator()(Variable iVariable) {
 	mObjectiveFunctionVariables.push_back(std::make_pair(1, iVariable));
+	return *this;
 }
 
-inline void
+inline LinearProblem&
 LinearProblem::operator()(Constraint iConstraint) {
 	mConstraints.push_back(iConstraint);
+	return *this;
 }

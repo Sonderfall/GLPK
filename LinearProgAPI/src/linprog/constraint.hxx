@@ -57,17 +57,20 @@ Constraint::getName() {
 	return mName;
 }
 
-inline void
+inline Constraint&
 Constraint::operator()(double iConstant) {
 	mConstants.push_back(iConstant);
+	return *this;
 }
 
-inline void
+inline Constraint&
 Constraint::operator()(double iCoefficient, Variable iVariable) {
 	mVariables.push_back(std::make_pair(iCoefficient, iVariable));
+	return *this;
 }
 
-inline void
+inline Constraint&
 Constraint::operator()(Variable iVariable) {
 	mVariables.push_back(std::make_pair(1, iVariable));
+	return *this;
 }

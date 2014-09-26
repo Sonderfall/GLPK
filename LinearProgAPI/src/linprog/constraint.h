@@ -82,7 +82,7 @@ public:
 	 * If you are expecting a subtraction, specify a negative constant
 	 * \param iConstant the constant to add
 	 */
-	void operator()(double iConstant);
+	Constraint& operator()(double iConstant);
 
 	/**
 	 * \brief Function Operator
@@ -92,7 +92,7 @@ public:
 	 * \param iCoefficient the coefficient of the variable
 	 * \param iVariable the variable to add
 	 */
-	void operator()(double iCoefficient, Variable iVariable);
+	Constraint& operator()(double iCoefficient, Variable iVariable);
 
 	/**
 	 * \brief Function Operator
@@ -101,7 +101,7 @@ public:
 	 * If you are expecting a subtraction, specify a negative Coefficient
 	 * \param iVariable the variable to add
 	 */
-	void operator()(Variable iVariable);
+	Constraint& operator()(Variable iVariable);
 
 	/**
 	 * Getters
