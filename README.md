@@ -59,7 +59,9 @@ where all variables are non-negative : x1 ≥ 0, x2 ≥ 0, x3 ≥ 0
 	lConstraintR.setLimits(MINF, 300);
 
 	/* Add constraints to the linear problem */
-	lLinearProblem(lConstraintP)(lConstraintQ)(lConstraintR);
+	lLinearProblem(lConstraintP);
+        lLinearProblem(lConstraintQ);
+        lLinearProblem(lConstraintR);
 
 	/* Solve the problem with the simplex algorithm */
 	lLinearProblem.solve();
