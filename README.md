@@ -32,44 +32,37 @@ where all variables are non-negative : x1 ≥ 0, x2 ≥ 0, x3 ≥ 0
 
 #### Implementation ####
 
-	/* Problem declaration, specify its name, the objective and if it's an integer problem */
+	/* Problem declaration, specify its name, the objective and if it's a integer problem */
 	LinearProblem lLinearProblem("GLPK Example", max, plne);
 
 	/* Variables declaration */
-	Variable lVariableX1("X1");
-	Variable lVariableX2("X2");
-	Variable lVariableX3("X3");
+	Variable lX1("X1");
+	Variable lX2("X2");
+	Variable lX3("X3");
 
 	/* Add variables to the objective function of the linear problem */
-	lLinearProblem(10, lVariableX1);
-	lLinearProblem(6, lVariableX2);
-	lLinearProblem(4, lVariableX3);
+	lLinearProblem(10, lX1)(6, lX2)(4, lX3);
 
 	/* Declaration of a constraint P and add variables in this constraint */
 	Constraint lConstraintP("P");
-	lConstraintP(lVariableX1);
-	lConstraintP(lVariableX2);
-	lConstraintP(lVariableX3);
+	lConstraintP(lX1)(lX2)(lX3);
 	lConstraintP.setLimits(MINF, 100);
 
 	/* Declaration of a constraint Q and add variables in this constraint */
 	Constraint lConstraintQ("Q");
-	lConstraintQ(10, lVariableX1);
-	lConstraintQ(4, lVariableX2);
-	lConstraintQ(5, lVariableX3);
+	lConstraintQ(10, lX1)(4, lX2)(5, lX3);
 	lConstraintQ.setLimits(MINF, 600);
 
 	/* Declaration of a constraint R and add variables in this constraint */
 	Constraint lConstraintR("R");
-	lConstraintR(2, lVariableX1);
-	lConstraintR(2, lVariableX2);
-	lConstraintR(6, lVariableX3);
+	lConstraintR(2, lX1)(2, lX2)(6, lX3);
 	lConstraintR.setLimits(MINF, 300);
 
 	/* Add constraints to the linear problem */
-	lLinearProblem(lConstraintP);
-	lLinearProblem(lConstraintQ);
-	lLinearProblem(lConstraintR);
+	lLinearProblem(lConstraintP)(lConstraintQ)(lConstraintR);
 
 	/* Solve the problem with the simplex algorithm */
 	lLinearProblem.solve();
+
+	/* Show results */
+	lLinearProblem.printResults();
