@@ -8,10 +8,10 @@
 #ifndef LINEAR_PROBLEM_H_
 # define LINEAR_PROBLEM_H_
 
-# include "../header/all.h"
-# include "../tools/tools.h"
-# include "variable.h"
-# include "constraint.h"
+# include "../../header/all.h"
+# include "../../tools/tools.h"
+# include "../variable/variable.h"
+# include "../constraint/constraint.h"
 
 /**
  * \enum ProblemObjective
@@ -25,8 +25,8 @@ enum ProblemObjective {
  * \enum ProblemKind
  */
 enum ProblemKind {
-	pl,
-	plne
+	lp,
+	ilp
 };
 
 class LinearProblem {

@@ -8,8 +8,8 @@
 #ifndef CONSTRAINT_H_
 # define CONSTRAINT_H_
 
-# include "../header/all.h"
-# include "variable.h"
+# include "../../header/all.h"
+# include "../variable/variable.h"
 
 class Constraint {
 public:

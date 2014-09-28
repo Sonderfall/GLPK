@@ -8,7 +8,7 @@
 #ifndef VARIABLE_H_
 # define VARIABLE_H_
 
-# include "../header/all.h"
+# include "../../header/all.h"
 
 class Variable {
 public:

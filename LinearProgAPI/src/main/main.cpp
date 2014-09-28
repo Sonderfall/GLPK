@@ -4,7 +4,7 @@
 void
 implemOne() {
 	DataBase* lDataBase = DataBase::getInstance();
-	LinearProblem lLinearProblem("Warehouse stock", max, plne);
+	LinearProblem lLinearProblem("Warehouse stock", max, ilp);
 
 	std::vector<Variable> lVariablesInObjectiveFunction;
 
@@ -98,7 +98,7 @@ implemOne() {
 void
 implemTwo() {
 	DataBase* lDataBase = DataBase::getInstance();
-	LinearProblem lLinearProblem("Warehouse stock", max, plne);
+	LinearProblem lLinearProblem("Warehouse stock", max, ilp);
 
 	std::vector<Variable> lVariablesInObjectiveFunction;
 
@@ -167,57 +167,9 @@ implemTwo() {
 }
 
 void
-implemThree() {
-	/* Problem declaration, specify the objective and if it's a integer problem */
-	LinearProblem lLinearProblem("GLPK Example", max, plne);
-
-	/* Variables declaration */
-	Variable lVariableX1("X1");
-	Variable lVariableX2("X2");
-	Variable lVariableX3("X3");
-
-	/* Add variables to the objective function of the linear problem */
-	lLinearProblem.addVariableInObjectiveFunction(10, lVariableX1);
-	lLinearProblem.addVariableInObjectiveFunction(6, lVariableX2);
-	lLinearProblem.addVariableInObjectiveFunction(4, lVariableX3);
-
-	/* Declaration of a constraint P and add variables in this constraint */
-	Constraint lConstraintP("P");
-	lConstraintP.addVariableInConstraint(1, lVariableX1);
-	lConstraintP.addVariableInConstraint(1, lVariableX2);
-	lConstraintP.addVariableInConstraint(1, lVariableX3);
-	lConstraintP.setLimits(MINF, 100);
-
-	/* Declaration of a constraint Q and add variables in this constraint */
-	Constraint lConstraintQ("Q");
-	lConstraintQ.addVariableInConstraint(10, lVariableX1);
-	lConstraintQ.addVariableInConstraint(4, lVariableX2);
-	lConstraintQ.addVariableInConstraint(5, lVariableX3);
-	lConstraintQ.setLimits(MINF, 600);
-
-	/* Declaration of a constraint R and add variables in this constraint */
-	Constraint lConstraintR("R");
-	lConstraintR.addVariableInConstraint(2, lVariableX1);
-	lConstraintR.addVariableInConstraint(2, lVariableX2);
-	lConstraintR.addVariableInConstraint(6, lVariableX3);
-	lConstraintR.setLimits(MINF, 300);
-
-	/* Add constraints to the linear problem */
-	lLinearProblem.addConstraint(lConstraintP);
-	lLinearProblem.addConstraint(lConstraintQ);
-	lLinearProblem.addConstraint(lConstraintR);
-
-	/* Solve the problem with the simplex algorithm */
-	lLinearProblem.solve();
-
-	/* Show results */
-	lLinearProblem.printResults();
-}
-
-void
-implemFour() {
+implemGLPK() {
 	/* Problem declaration, specify its name, the objective and if it's a integer problem */
-	LinearProblem lLinearProblem("GLPK Example", max, plne);
+	LinearProblem lLinearProblem("GLPK Example", max, ilp);
 
 	/* Variables declaration */
 	Variable lX1("X1");
@@ -243,7 +195,10 @@ implemFour() {
 	lConstraintR.setLimits(MINF, 300);
 
 	/* Add constraints to the linear problem */
-	lLinearProblem(lConstraintP)(lConstraintQ)(lConstraintR);
+	lLinearProblem
+	(lConstraintP)
+	(lConstraintQ)
+	(lConstraintR);
 
 	/* Solve the problem with the simplex algorithm */
 	lLinearProblem.solve();
@@ -257,13 +212,11 @@ main(int argc, char** argv) {
 	DataBase* lDataBase = DataBase::getInstance();
 	lDataBase->readFile(argv[1]);
 
-	implemOne();
+//	implemOne();
 
 //	implemTwo();
 
-//	implemThree();
-
-//	implemFour();
+	implemGLPK();
 
 	return 0;
 }

@@ -9,7 +9,7 @@
 
 LinearProblem::LinearProblem(std::string iName, ProblemObjective iObj)
 : mName (iName)
-, mProblemKind (pl)
+, mProblemKind (lp)
 , mProblemObjective (iObj)
 , mMatrixIterator (0) {
 	initLinearProblem();
@@ -65,7 +65,7 @@ LinearProblem::processObjectiveFunction() {
 		glp_set_obj_coef(mLinearProb, lVariablePosition, lCoefficient);
 		glp_set_col_bnds(mLinearProb, lVariablePosition, GLP_DB, lVariable.getLowerLimit(), lVariable.getUpperLimit());
 
-		if (mProblemKind == plne) {
+		if (mProblemKind == ilp) {
 			glp_set_col_kind(mLinearProb, lVariablePosition, GLP_IV);
 		}
 
@@ -122,7 +122,7 @@ LinearProblem::processConstraintsVarAndConstant() {
 				int lVariablePosition = glp_get_num_cols(mLinearProb);
 				glp_set_col_name(mLinearProb, lVariablePosition, lVariable.getName().c_str());
 				glp_set_col_bnds(mLinearProb, lVariablePosition, GLP_DB, lVariable.getLowerLimit(), lVariable.getUpperLimit());
-				if (mProblemKind == plne) {
+				if (mProblemKind == ilp) {
 					glp_set_col_kind(mLinearProb, lVariablePosition, GLP_IV);
 				}
 
@@ -163,21 +163,21 @@ LinearProblem::processSimplex() {
 	unsigned int j = 1;
 
 	switch (mProblemKind) {
-		case plne:
+		case ilp:
 			glp_intopt(mLinearProb, nullptr);
 			mResults.insert(std::make_pair("Z", glp_mip_obj_val(mLinearProb)));
 			for (std::pair<double, Variable> lPair : mObjectiveFunctionVariables) {
 				mResults.insert(std::make_pair(lPair.second.getName(), glp_mip_col_val(mLinearProb, i++)));
 			}
 			break;
-		case pl:
+		case lp:
 			mResults.insert(std::make_pair("Z", glp_get_obj_val(mLinearProb)));
 			for (std::pair<double, Variable> lPair : mObjectiveFunctionVariables) {
 				mResults.insert(std::make_pair(lPair.second.getName(), glp_get_col_prim(mLinearProb, j++)));
 			}
 			break;
 		default:
-			assert(mProblemKind == plne || mProblemKind == pl);
+			assert(mProblemKind == ilp || mProblemKind == lp);
 			break;
 	}
 }

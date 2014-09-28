@@ -1,8 +1,8 @@
 #ifndef LINPROG_H_
 # define LINPROG_H_
 
-# include "variable.h"
-# include "constraint.h"
-# include "linear-problem.h"
+# include "variable/variable.h"
+# include "constraint/constraint.h"
+# include "linear-problem/linear-problem.h"
 
 #endif /* LINPROG_H_ */
