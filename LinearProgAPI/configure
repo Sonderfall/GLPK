@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ $# -gt 0 ] && [ $1 = "--with-debug" ] ; then
+  mkdir -p $PWD/build/
+  cd build && cmake -D CMAKE_CXX_FLAGS="-O3 -g3 -Wall -std=c++11 -g -ggdb -L/lib/glpk-4.54" ..
+elif [ $# -gt 0 ] && [ $1 = "--help" ] ; then
+  echo ""
+  echo "- type \"./configure --with-debug\" to add debug flags when compiling"
+  echo "- type \"./configure\" if you just want to compile without debug flags"
+  echo ""
+else
+  mkdir -p $PWD/build/
+  cd build && cmake -D CMAKE_CXX_FLAGS="-O2 -Wall -std=c++11 -L/lib/glpk-4.54" ..
+fi

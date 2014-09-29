@@ -1,0 +1,15 @@
+Compilation :
+            - Placer la bibliothèque GLPK dans le dossier lib
+            - ./configure && make
+
+Run :
+            - Binaire LinearProgAPI généré à la racine
+            - Pour lancer le problème du cours : ./LinearProgAPI /resources/sites.txt
+            - Pour modifier l'implem utilisée, aller dans src/main/main.cpp
+
+Features du projet :
+         - 3 classes de wrapping (LinearProblem, Constraint et Variable)
+         - Comprend des asserts afin d'éviter des problèmes évidents de modélisation
+         - Plusieurs façons d'utiliser l'API, soit par appelle de fonctions simples, soit en utilisant les foncteurs
+         - Code documenté
+         - Une documentation peut être générée par la commande "make doc"

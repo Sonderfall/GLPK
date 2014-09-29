@@ -212,11 +212,11 @@ main(int argc, char** argv) {
 	DataBase* lDataBase = DataBase::getInstance();
 	lDataBase->readFile(argv[1]);
 
-//	implemOne();
+	implemOne();
 
 //	implemTwo();
 
-	implemGLPK();
+//	implemGLPK();
 
 	return 0;
 }
