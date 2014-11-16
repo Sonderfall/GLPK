@@ -10,5 +10,5 @@ elif [ $# -gt 0 ] && [ $1 = "--help" ] ; then
   echo ""
 else
   mkdir -p $PWD/build/
-  cd build && cmake -D CMAKE_CXX_FLAGS="-O2 -Wall -std=c++11 -L/lib/glpk-4.54" ..
+  cd build && cmake -D CMAKE_CXX_FLAGS="-O3 -Wall -std=c++11 -L/lib/glpk-4.54" ..
 fi

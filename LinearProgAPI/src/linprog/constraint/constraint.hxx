@@ -6,7 +6,7 @@
  */
 
 inline void
-Constraint::addVariableInConstraint(double iCoefficient, Variable iVariable) {
+Constraint::addVariableInConstraint(double iCoefficient, const Variable& iVariable) {
 	mVariables.push_back(std::make_pair(iCoefficient, iVariable));
 }
 
@@ -47,7 +47,7 @@ Constraint::getConstants() {
 	return mConstants;
 }
 
-inline std::vector<std::pair<double, Variable>>
+inline std::vector<std::pair<double, const Variable&>>
 Constraint::getVariables() {
 	return mVariables;
 }
@@ -64,13 +64,13 @@ Constraint::operator()(double iConstant) {
 }
 
 inline Constraint&
-Constraint::operator()(double iCoefficient, Variable iVariable) {
+Constraint::operator()(double iCoefficient, const Variable& iVariable) {
 	mVariables.push_back(std::make_pair(iCoefficient, iVariable));
 	return *this;
 }
 
 inline Constraint&
-Constraint::operator()(Variable iVariable) {
+Constraint::operator()(const Variable& iVariable) {
 	mVariables.push_back(std::make_pair(1, iVariable));
 	return *this;
 }

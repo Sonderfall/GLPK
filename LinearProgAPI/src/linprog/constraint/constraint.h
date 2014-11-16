@@ -43,7 +43,7 @@ public:
 	 * \param iCoefficient the coefficient of the variable
 	 * \param iVariable the variable to add
 	 */
-	void addVariableInConstraint(double iCoefficient, Variable iVariable);
+	void addVariableInConstraint(double iCoefficient, const Variable& iVariable);
 
 	/**
 	 * \brief Add a new constant to the constraint
@@ -92,7 +92,7 @@ public:
 	 * \param iCoefficient the coefficient of the variable
 	 * \param iVariable the variable to add
 	 */
-	Constraint& operator()(double iCoefficient, Variable iVariable);
+	Constraint& operator()(double iCoefficient, const Variable& iVariable);
 
 	/**
 	 * \brief Function Operator
@@ -101,7 +101,7 @@ public:
 	 * If you are expecting a subtraction, specify a negative Coefficient
 	 * \param iVariable the variable to add
 	 */
-	Constraint& operator()(Variable iVariable);
+	Constraint& operator()(const Variable& iVariable);
 
 	/**
 	 * Getters
@@ -110,7 +110,7 @@ public:
 	int getLowerLimit();
 	int getUpperLimit();
 	std::vector<double> getConstants();
-	std::vector<std::pair<double, Variable>> getVariables();
+	std::vector<std::pair<double, const Variable&>> getVariables();
 
 private:
 	/**
@@ -138,7 +138,7 @@ private:
 	/**
 	 * \brief All variables of the constraint
 	 */
-	std::vector<std::pair<double, Variable>> mVariables;
+	std::vector<std::pair<double, const Variable&>> mVariables;
 };
 
 # include "constraint.hxx"

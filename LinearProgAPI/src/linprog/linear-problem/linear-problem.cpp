@@ -101,7 +101,7 @@ void
 LinearProblem::processConstraintsVarAndConstant() {
 	int lLineIterator = 1;
 	for (Constraint lConstraint : mConstraints) {
-		std::vector<std::pair<double, Variable>> lVariables = lConstraint.getVariables();
+		std::vector<std::pair<double, const Variable&>> lVariables = lConstraint.getVariables();
 		for (std::pair<double, Variable> lPair : lVariables) {
 			++mMatrixIterator;
 			Variable lVariable(lPair.second);
